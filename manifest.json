@@ -1,0 +1,16 @@
+
+{
+  "manifest_version": 2,
+  "name": "hatebc",
+  "version": "1.0",
+  "description": "Shows hateb comments",
+  "permissions": ["activeTab"],
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"],
+      "css": ["styles.css"],
+      "run_at": "document_end"
+    }
+  ]
+}
