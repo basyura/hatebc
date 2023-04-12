@@ -4,7 +4,11 @@
   "name": "hatebc",
   "version": "1.0",
   "description": "Shows hateb comments",
-  "permissions": ["activeTab"],
+  "permissions": ["activeTab", "https://b.hatena.ne.jp/entry/json/*"],
+  "background" :{
+    "scripts": ["background.js"],
+    "persistent": false
+  },
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*"],
