@@ -1,5 +1,5 @@
-document.addEventListener("keydown", (event) => {
-  if (event.ctrlKey && event.key === "c") {
+document.addEventListener("keydown", (evnt) => {
+  if (evnt.ctrlKey && evnt.key === "c") {
     // createMessageDiv();
     //
     const existingDiv = document.getElementById("copy-message-extension");
@@ -8,6 +8,37 @@ document.addEventListener("keydown", (event) => {
       return;
     }
     fetchJsonAndShow();
+  }
+
+  const messageDiv = document.getElementById("copy-message-extension");
+  if (!messageDiv) return;
+
+  const tableWrapper = messageDiv.querySelector("div");
+  if (!tableWrapper) return;
+
+  const scrollAmount = 50; // スクロール量を変更する場合はこの値を調整
+
+  // console.log("scrollTop:" + tableWrapper.scrollTop);
+  // console.log("clientHei:" + tableWrapper.clientHeight);
+  // console.log("scrollHei:" + tableWrapper.scrollHeight);
+  if (evnt.ctrlKey && evnt.key === "n") {
+    evnt.preventDefault();
+    evnt.stopPropagation();
+    if (
+      tableWrapper.scrollTop + tableWrapper.clientHeight >=
+      tableWrapper.scrollHeight
+    ) {
+      scrollAmount = 0;
+    }
+    tableWrapper.scrollTop += scrollAmount;
+  } else if (evnt.ctrlKey && evnt.key === "p") {
+    evnt.preventDefault();
+    evnt.stopPropagation();
+
+    if (tableWrapper.scrollTop === 0) {
+      scrollAmount = 0;
+    }
+    tableWrapper.scrollTop -= scrollAmount;
   }
 });
 
@@ -99,6 +130,8 @@ function createTableFromBookmarks(bookmarks) {
   const tableWrapper = document.createElement("div");
   tableWrapper.style.overflow = "auto";
   tableWrapper.style.maxHeight = "500px"; // ヘッダーの高さを引く
+  tableWrapper.style.outline = 0;
+  tableWrapper.tabIndex = 0; // フォーカス可能にする
   tableWrapper.appendChild(table);
 
   return tableWrapper;
@@ -112,6 +145,9 @@ function showMessage(message, isTable = false) {
 
   if (isTable) {
     div.appendChild(message);
+    setTimeout(() => {
+      message.focus(); // テーブルのラッパー要素にフォーカスを当てる
+    }, 0);
   } else {
     div.innerText = message;
   }
